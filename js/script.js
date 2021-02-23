@@ -1,266 +1,101 @@
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
-    //! Урок номер 16
-    //! Rest, spred , Деструктуризация
-
-    //! Rest параметр 
-
-    //* Иногда функции приходилось принимать множество  неизвестных множество параметров
-    //* Таким образом всё, что мы передали в как аргумент, назначается массивом
-    //*Также мы можем вывести только те, которые нам нужны например a, b, с выведуту red, 5, 12 а всё остальное выведет массив arr
-
-    function test(a, b, c, ...arr) {
-        console.log(arr);
-        console.log(a, b, c);
-    }
-
-    test('red', 5, 12, 'black', [], true, 9);
+    //! Урок номер 18
+    //! Скрипты и время выполнения setTimeout, setInterval и requestAnimationFrame Объект Date
 
 
+    //* setTimeout принимает 2 аргумета, первый функция колбек и второй это время, через какой промежуток времени запустить эту функцию, пример:
 
-    //! spred оператор 
+    // setTimeout(function(){
+    //     console.log('сообщение в консоль');
+    // }, 3000);
 
-    const arr = ['red', 5, 12];
+    //* setInterval различия будут в том, что через какой интервал будет запускаться колбек функция, теперь каждые 2 сек будет запускаться
 
-    function test2(a, b, c) {
-        console.log(arr);
-        console.log(a, b, c);
-    }
-    //** Как мы можем передать значения из нашего массива? */
-    test2(...arr);
+    // setInterval(function(){
+    //     console.log('привет я set interval');
+    // }, 2000);
 
-    //* все эллементы массива будут переданы по одному, ане целым массивом
-    //* таким образом мы можем передать несколько массивов или комбинировать их с другими значениями
+    // let count = 0;
+    // setInterval(function () {
+    //     count++;
+    //     console.log('привет я set interval ' + count);
+    // }, 2000);
 
-    const arr1 = ['red', 5, 12];
-    const arr2 = ['black', true];
+    //* есть функции которые останавливают их обеих к примеру clearInterval(); и clearTimout();
+    //* она принимает индитификатор setInterval, как его определить ?
+    //* нужно создать переменную let idInterval и вывести её в clearInterval
+    //* чтобы была в этом логика , мы setInterval поместим в setTimeout и поставим время
 
-    function test3(a, b, c, d, e) {
-        console.log(a, b, c);
-        console.log(d, e);
-    }
-    test3(...arr1, ...arr2);
+    // let count = 0;
 
-    //* также мы можем соединять из 2 массивов в 1
+    // let idInterval = setInterval(function () {
+    //     count++;
+    //     console.log('привет я set interval ' + count);
+    // }, 2000);
 
-    const arr3 = ['red', 5, 12];
-    const arr4 = ['black', true];
-    const arr5 = [...arr3, ...arr4];
-    console.log('arr5: ', arr5);
-
-    //* также мы можем довлять любые значения, в начале, в конце, не имеет значения
-
-    const arr6 = ['red', 5, 12];
-    const arr7 = ['black', true];
-    const arr8 = [1, ...arr6, 44, ...arr7, 'hi gidra'];
-    console.log('arr8: ', arr8);
-
-    const allimg = document.querySelectorAll('img');
-    console.log(allimg);
-    const newImg = [...allimg];
-    console.log(newImg);
+    // setTimeout(function () {
+    //     clearInterval(idInterval);
+    // }, 7000);
 
 
-    //! Деструктуризация объектов
+    // let getMassage = function (name) {
+    //     console.log('привет ' + name + '!');
+    // };
 
-    //* как присвоить новым эллементам значения car? 
+    // let count = 0;
 
-    const car = {
-        brand: 'mazda',
-        model: 3,
-        color: 'red'
-    };
+    // let idInterval = setInterval(getMassage, 2000, 'сука, я твоя смерть');
 
-    //* так было 
-    // const brand = car.brand;
-    // const model = car.model;
-    // const color = car.color;
-    // console.log(brand, model, color);
-    //* Теперь мы делаем всё проще
+    // setTimeout(getMassage, 5000, 'мудак');
 
-    const {
-        brand,
-        model,
-        color
-    } = car;
+    //* ну ксажилению у этих способов есть минусы страница может быть не в активной вкладке, и анимация может продолжаться, также
+    //* анимация работает не ссинхронно с обоновлением экрана , что ведёт к торможению компа, для того чтобы это всё избежать
+    //* была создана фунция реквестАнимейшен фрейм,  которая помогая оптимизировать анимации, помогая делать их более плавными, также
+    //* использовать меньше ресурсво и связывать анимации в одно целое. 
+    //* для этого создаём за пределами функции переменную flyInterval, название производное
+    //* а в нутри функции пишем эту переменную flyInterval = requestAnimationFrame(сюда передадим имя функции), для её завершения
+    //* мы прописываем cancelAnimationFrame(flyInterval);
 
-    //*мы в фигурных скобках указываем свойства которые хотим вхять у этого обьекта и задать переменные с таким же именем
-    console.log(brand, model, color);
+    // count = 0;
+    // let flyInterval;
+    // let flyAnimate = function () {
+    //     flyInterval = requestAnimationFrame(flyAnimate);
+    //     count++;
+    //     if (count < 350) {
+    //         worm.style.top = count + 'px';
+    //         airplane.style.left = сount * 2 + 'px';
+    //     } else if (count < 500) {
+    //         airplane.style.left = сount * 2 + 'px';
+    //     } else {
+    //         cancelAnimationFrame(flyInterval);
+    //     }
+    //     console.log(count);
+    // };
 
-    //* если в обьекте есть вложенность , то мы можем обратится к ней
+    // flyInterval = requestAnimationFrame(flyAnimate);
 
-    const car1 = {
-        brand: 'mazda',
-        model: 3,
-        color: 'red',
-        options: {
-            door: 4,
-            abs: true
-        }
-    };
+    //* чтоыбы правильно работать с requestAnimationFrame нужно уметь работать с Date , знать текущее время, окончание работы анимации и т.д
 
-    const {
-        options: {
-            door,
-            abs
-        }
-    } = car1;
-    console.log(door, abs);
+    //! Date 
 
-    //* Также мы можем изменять имена переменных таким способом 
-    const {
-        options: {
-            door: doorCar,
-            abs: absCar
-        }
-    } = car1;
-    console.log(doorCar, absCar);
+    //* используем get для получения какой - то даты часов, минут и т.д
+    //* и наоборт для того, чтобы установить используем setData, пример
 
-    //* Также мы можем добавить свойство по умолчанию с помощью = , если свойства в объекте нету то оно его создат 
-    const {
-        options: {
-            color = 'red'
-        } = {}
-    } = car1;
-    console.log(color);
+    let data = new Date();
+    data.setDate(data.getDate() + 100);
+    console.log('день недели ' + data.getDay());
+    //* мы также можем высчитать какое число будет через 100 дней
+    //* отчёт времени в js начался хранится в милисекундах , прошедших  с полуночи 1970 года 1 января это называется timeStend
+    //* чтобы его получить нужно воспользоваться методом getTime();
+    console.log(data.getTime());
+    //* также мы можем вписать в скобочки Data() числа наугад, и мы получим результат с 1970 года 1 января + это количество милисекунд, пример
 
-    //* где мы можем это приминить, например у нас есть функция которя может принимать объект
-
-    const createCar = (car) => {
-        console.log(`Запущенно производство автомобиля ${car.brand} ${car.model}
-цвет кузова ${car.color}
-цвет салона ${car.colorInt}`);
-    };
-
-    createCar({
-        brand: 'mazda',
-        model: 3,
-        color: 'blue',
-        colorInt: 'black'
-    });
-
-    //* Мы можем деструктеризовать это  и добавить на всякий случай если такого свойства не будет, свойство по умолчанию
-
-    const createCar2 = ({
-        brand = 'BMW',
-        model = 6,
-        color = 'black',
-        colorInt = 'white'
-    }) => {
-        console.log(`Запущенно производство автомобиля ${brand} ${model}
-    цвет кузова ${color}
-    цвет салона ${colorInt}`);
-    };
-
-    createCar2({
-        model: 3,
-        color: 'blue',
-    });
-
-    //* мы можем деструктеризировать массивы
-
-    const cars = ['mazda', 'bmw', 'audi', 'mercedes'];
-    const [a, b, c] = cars;
-    console.log(a);
-    console.log(b);
-    console.log(c);
-
-    //* можно пропустить эллемент указав 2 запятые
-
-    const [a, , b, c] = cars;
-    console.log(a);
-    console.log(b);
-    console.log(c);
-
-    //* с многомерными или вложеными массивами
-    const cars1 = [
-        ['mazda', 'bmw'],
-        ['audi', 'mercedes'], 'zil'
-    ];
-
-    // const [a, b, c] = cars1;
-    const [
-        [a, b],
-        [...c], e
-    ] = cars1;
-
-    console.log(a);
-    console.log(b);
-    console.log(c);
-    // console.log(d);
-    console.log(e);
-
-    //* Ещё пример
-
-    const carModel = {
-        brand: 'volvo',
-        models: {
-            sedan: ['s60', 's90'],
-            cross: ['v60', 'v90']
-        }
-    };
-
-
-    const {
-        models: {
-            sedan: [s1, s2],
-            cross: [c1, c2]
-        }
-    } = carModel;
-    console.log(s1, s2, c1, c2);
-
-    //* как получить значение переменных в массив
-
-    const car = 'bmw';
-    const cycle = 'bmx';
-    const bike = 'honda';
-
-    const transport = {
-        car,
-        cycle,
-        bike
-    }
-    console.log(transport);
-
-    //! метод ассайд нужен для того , что бы взять например 2 обьекта и с одного взять все данные и перезаписать второй, пример
-
-    const transports = {
-        car: 'mazda',
-        cycle: 'bmx',
-        bike: 'honda'
-    };
-
-    const newTransports = {
-        bike: 'suzuki',
-        quaBike: 'polaris'
-    };
-
-    Object.assign(transports, newTransports);
-    console.log(transports);
+    let data2 = new Date(-615214413123);
+    console.log(data2);
 
 
 
-    //! Map and Set
 
-    const map = new Map();
-    //* коллекция map хранит пары ключ значение, но отличия в том , что ключом может быть любое произвольное значение, а не только строка как в обьекте
-    //* с помощью Set мы можем добавлять в коллекцию данные например
-    map.set('car', {brend: 'mazda', model: 3});
-
-    //* ключом будет число 777 а не строка 777
-    map.set(777, 'три топора');
-
-    //* ключом может быть даже null 
-    map.set(null, 'даже так');
-
-    //* Ключ как обьект
-    const obj = {
-        name: 'Юра',
-        age: 28
-    };
-    map.set(obj, 123);
-
-
-    console.log(map);
 });
